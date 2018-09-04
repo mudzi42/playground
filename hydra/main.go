@@ -6,11 +6,16 @@ import (
 	_ "net/http/pprof"
 
 	"github.com/mudzi42/playground/hydra/hlogger"
+	"github.com/mudzi42/playground/hydra/shield"
 )
 
 func main() {
 	logger := hlogger.GetInstance()
 	logger.Println("Starting Hydra web server")
+
+	builder := shieldBuilder.NewShieldBuilder()
+	shield := builder.RaiseFront().RaiseBack().Build()
+	logger.Printf("%+v \n", *shield)
 
 	http.HandleFunc("/", sroot)
 	http.ListenAndServe(":8081", nil)
