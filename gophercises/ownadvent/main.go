@@ -2,13 +2,38 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 )
 
-const storyFile = "gopher.json"
+// const storyFile = "gopher.json"
+
+var defaultHandlerTmpl = `
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Choose Your Own Gopher Adventure</title>
+    </head>
+    <body>
+        <h1>{{.Title}}</h1>
+        {{range .Story}}
+        <p>{{.}}</p>
+        {{end}}
+        <ul>
+        {{range .Options}}
+            <li><a href="/{{.Arc}}">{{.Text}}</a></li>
+        {{end}}
+        </ul>
+    </body>
+</html>`
+
+type Story map[string]*StoryArc
 
 type StoryArc struct {
 	Title   string   `json:"title"`
@@ -58,16 +83,64 @@ func getStoryArc(sa *StoryArc) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	nextStoryArc := sa.Options[nc].Arc
-
 	return nextStoryArc, nil
 }
 
-func main() {
-	fmt.Printf("Choose your own adventure with %s\n\n", storyFile)
+// CLIStory runs a choose your own adventure story via the command line.
+func CLIStory(story Story) {
+	var err error
+	nextStoryArc := "intro"
+	fmt.Printf("Choose your own adventure with %s\n\n", story[nextStoryArc].Title)
 
-	sf, err := os.Open(storyFile)
+	for {
+		nextStoryArc, err = getStoryArc(story[nextStoryArc])
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		if nextStoryArc == "" {
+			break
+		}
+	}
+
+	fmt.Println("The end")
+}
+
+func NewHandler(s Story) http.Handler {
+
+	return handler{s}
+}
+
+type handler struct {
+	s Story
+}
+
+func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	tpl := template.Must(template.New("").Parse(defaultHandlerTmpl))
+	err := tpl.Execute(w, h.s["intro"])
+	if err != nil {
+		panic(err)
+	}
+}
+
+func main() {
+	var story Story
+
+	advType := flag.String("type", "web", "web or cli")
+	port := flag.Int("port", 3000, "the port to start the CYOA web application on")
+	filename := flag.String("file", "gopher.json", "the JSON file with the CYOA story")
+	flag.Parse()
+
+	if !containsString([]string{"web", "cli"}, *advType) {
+		msg := fmt.Sprintf("do not recognize adventure type %s.  expecting web or cli", *advType)
+		log.Fatal(msg)
+
+	}
+
+	fmt.Printf("Using the story %s.\n", *filename)
+
+	sf, err := os.Open(*filename)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -78,23 +151,25 @@ func main() {
 		fmt.Println(err)
 	}
 
-	storyArcs := make(map[string]*StoryArc)
-
-	err = json.Unmarshal(sb, &storyArcs)
+	err = json.Unmarshal(sb, &story)
 	if err != nil {
 		log.Fatal(err)
 	}
+	if *advType == "cli" {
+		CLIStory(story)
+	} else {
 
-	nextStoryArc := "intro"
-	for {
-		nextStoryArc, err = getStoryArc(storyArcs[nextStoryArc])
-		if err != nil {
-			log.Fatal(err)
-		}
-		if nextStoryArc == "" {
-			break
+		h := NewHandler(story)
+		fmt.Printf("Starting the server on port %d\n", *port)
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), h))
+	}
+}
+
+func containsString(strSlice []string, searchStr string) bool {
+	for _, value := range strSlice {
+		if value == searchStr {
+			return true
 		}
 	}
-
-	fmt.Println("The end")
+	return false
 }
