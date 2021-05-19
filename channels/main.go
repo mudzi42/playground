@@ -2,20 +2,22 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
-func worker(done chan bool) {
-	fmt.Print("working ...")
-	time.Sleep(time.Second)
-	fmt.Println("done")
+func ping(pings chan<- string, msg string) {
+	pings <- msg
+}
 
-	done <- true
+func pong(pings <-chan string, pongs chan<- string) {
+	msg := <-pings
+	pongs <- msg
 }
 
 func main() {
-	done := make(chan bool, 1)
-	go worker(done)
+	pings := make(chan string, 1)
+	pongs := make(chan string, 1)
 
-	<-done
+	ping(pings, "passed message") // puts msg on ping
+	pong(pings, pongs)            // takes msg off ping and puts it on pong
+	fmt.Println(<-pongs)
 }
