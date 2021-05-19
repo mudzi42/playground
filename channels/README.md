@@ -2,3 +2,4 @@
 2. https://gobyexample.com/channel-buffering
 3. https://gobyexample.com/channel-synchronization
 4. https://gobyexample.com/channel-directions
+5. https://gobyexample.com/select

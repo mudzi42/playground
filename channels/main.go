@@ -2,22 +2,28 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
-func ping(pings chan<- string, msg string) {
-	pings <- msg
-}
-
-func pong(pings <-chan string, pongs chan<- string) {
-	msg := <-pings
-	pongs <- msg
-}
-
 func main() {
-	pings := make(chan string, 1)
-	pongs := make(chan string, 1)
+	c1 := make(chan string)
+	c2 := make(chan string)
 
-	ping(pings, "passed message") // puts msg on ping
-	pong(pings, pongs)            // takes msg off ping and puts it on pong
-	fmt.Println(<-pongs)
+	go func() {
+		time.Sleep(1 * time.Second)
+		c1 <- "one"
+	}()
+	go func() {
+		time.Sleep(2 * time.Second)
+		c2 <- "two"
+	}()
+
+	for i := 0; i < 2; i++ {
+		select {
+		case msg2 := <-c2:
+			fmt.Println("received", msg2)
+		case msg1 := <-c1:
+			fmt.Println("received", msg1)
+		}
+	}
 }
