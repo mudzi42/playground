@@ -4,3 +4,4 @@
 4. https://gobyexample.com/channel-directions
 5. https://gobyexample.com/select
 6. https://gobyexample.com/timeouts
+7. https://gobyexample.com/non-blocking-channel-operations
