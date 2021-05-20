@@ -3,3 +3,4 @@
 3. https://gobyexample.com/channel-synchronization
 4. https://gobyexample.com/channel-directions
 5. https://gobyexample.com/select
+6. https://gobyexample.com/timeouts
