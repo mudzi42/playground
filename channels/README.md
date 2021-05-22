@@ -5,3 +5,4 @@
 5. https://gobyexample.com/select
 6. https://gobyexample.com/timeouts
 7. https://gobyexample.com/non-blocking-channel-operations
+8. https://gobyexample.com/closing-channels
