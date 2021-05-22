@@ -5,28 +5,13 @@ import (
 )
 
 func main() {
-	jobs := make(chan int, 5)
-	done := make(chan bool)
+	queue := make(chan string, 2)
 
-	go func() {
-		for {
-			j, more := <-jobs
-			if more {
-				fmt.Println("received job", j)
-			} else {
-				fmt.Println("received all jobs")
-				done <- true
-				return
-			}
-		}
-	}()
+	queue <- "one"
+	queue <- "two"
+	close(queue)
 
-	for j := 1; j <= 3; j++ {
-		jobs <- j
-		fmt.Println("send job", j)
+	for elem := range queue {
+		fmt.Println(elem)
 	}
-	close(jobs)
-	fmt.Println("sent all jobs")
-
-	<-done
 }
