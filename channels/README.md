@@ -7,3 +7,4 @@
 7. https://gobyexample.com/non-blocking-channel-operations
 8. https://gobyexample.com/closing-channels
 9. https://gobyexample.com/range-over-channels
+10. https://gobyexample.com/timers
