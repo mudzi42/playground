@@ -8,3 +8,4 @@
 8. https://gobyexample.com/closing-channels
 9. https://gobyexample.com/range-over-channels
 10. https://gobyexample.com/timers
+11. https://gobyexample.com/tickers
