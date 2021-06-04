@@ -11,3 +11,4 @@
 11. https://gobyexample.com/tickers
 12. https://gobyexample.com/worker-pools
 13. https://gobyexample.com/waitgroups
+14. https://gobyexample.com/rate-limiting
