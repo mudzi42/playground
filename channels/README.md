@@ -14,3 +14,4 @@
 14. https://gobyexample.com/rate-limiting
 15. https://gobyexample.com/atomic-counters
 16. https://gobyexample.com/mutexes
+17. https://gobyexample.com/stateful-goroutines
