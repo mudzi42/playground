@@ -6,3 +6,4 @@
 6. https://gobyexample.com/string-functions
 7. https://gobyexample.com/string-formatting
 8. https://gobyexample.com/xml
+9. https://gobyexample.com/time

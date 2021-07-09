@@ -1,48 +1,43 @@
 package main
 
 import (
-	"encoding/xml"
 	"fmt"
+	"time"
 )
 
-type Plant struct {
-	XMLName xml.Name `xml:"plant"`
-	Id      int      `xml:"id,attr"`
-	Name    string   `xml:"name"`
-	Origin  []string `xml:"origin"`
-}
-
-func (p Plant) String() string {
-	return fmt.Sprintf("Plant id=%v, name=%v, origin=%v",
-		p.Id, p.Name, p.Origin)
-}
-
 func main() {
-	coffee := &Plant{Id: 27, Name: "Coffee"}
-	coffee.Origin = []string{"Ethiopia", "Brazil"}
+	p := fmt.Println
 
-	out, _ := xml.MarshalIndent(coffee, " ", "  ")
-	fmt.Println(string(out))
+	now := time.Now()
+	p(now)
 
-	fmt.Println(xml.Header + string(out))
+	then := time.Date(
+		2009, 11, 17, 20, 34, 58, 651387237, time.UTC)
+	p(then)
 
-	var p Plant
-	if err := xml.Unmarshal(out, &p); err != nil {
-		panic(err)
-	}
-	fmt.Println(p)
+	p(then.Year())
+	p(then.Month())
+	p(then.Day())
+	p(then.Hour())
+	p(then.Minute())
+	p(then.Second())
+	p(then.Nanosecond())
+	p(then.Location())
 
-	tomato := &Plant{Id: 81, Name: "Tomato"}
-	tomato.Origin = []string{"Mexico", "California"}
+	p(then.Weekday())
 
-	type Nesting struct {
-		XMLName xml.Name `xml:"nesting"`
-		Plants  []*Plant `xml:"parent>child>plant"`
-	}
+	p(then.Before(now))
+	p(then.After(now))
+	p(then.Equal(now))
 
-	nesting := &Nesting{}
-	nesting.Plants = []*Plant{coffee, tomato}
+	diff := now.Sub(then)
+	p(diff)
 
-	out, _ = xml.MarshalIndent(nesting, " ", "  ")
-	fmt.Println(string(out))
+	p(diff.Hours())
+	p(diff.Minutes())
+	p(diff.Seconds())
+	p(diff.Nanoseconds())
+
+	p(then.Add(diff))
+	p(then.Add(-diff))
 }
