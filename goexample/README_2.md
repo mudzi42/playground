@@ -5,6 +5,8 @@
 5. https://gobyexample.com/collection-functions
 6. https://gobyexample.com/string-functions
 7. https://gobyexample.com/string-formatting
+4. https://gobyexample.com/regular-expressions
+5. https://gobyexample.com/json
 8. https://gobyexample.com/xml
 9. https://gobyexample.com/time
 10. https://gobyexample.com/epoch
