@@ -1,60 +1,48 @@
 package main
 
 import (
+	"encoding/xml"
 	"fmt"
-	"os"
 )
 
-type point struct {
-	x, y int
+type Plant struct {
+	XMLName xml.Name `xml:"plant"`
+	Id      int      `xml:"id,attr"`
+	Name    string   `xml:"name"`
+	Origin  []string `xml:"origin"`
+}
+
+func (p Plant) String() string {
+	return fmt.Sprintf("Plant id=%v, name=%v, origin=%v",
+		p.Id, p.Name, p.Origin)
 }
 
 func main() {
+	coffee := &Plant{Id: 27, Name: "Coffee"}
+	coffee.Origin = []string{"Ethiopia", "Brazil"}
 
-	p := point{1, 2}
-	fmt.Printf("%v\n", p)
+	out, _ := xml.MarshalIndent(coffee, " ", "  ")
+	fmt.Println(string(out))
 
-	fmt.Printf("%+v\n", p)
+	fmt.Println(xml.Header + string(out))
 
-	fmt.Printf("%#v\n", p)
+	var p Plant
+	if err := xml.Unmarshal(out, &p); err != nil {
+		panic(err)
+	}
+	fmt.Println(p)
 
-	fmt.Printf("%T\n", p)
+	tomato := &Plant{Id: 81, Name: "Tomato"}
+	tomato.Origin = []string{"Mexico", "California"}
 
-	fmt.Printf("%t\n", true)
+	type Nesting struct {
+		XMLName xml.Name `xml:"nesting"`
+		Plants  []*Plant `xml:"parent>child>plant"`
+	}
 
-	fmt.Printf("%d\n", 123)
+	nesting := &Nesting{}
+	nesting.Plants = []*Plant{coffee, tomato}
 
-	fmt.Printf("%b\n", 14)
-
-	fmt.Printf("%c\n", 33)
-
-	fmt.Printf("%x\n", 456)
-
-	fmt.Printf("%f\n", 78.9)
-
-	fmt.Printf("%e\n", 123400000.0)
-	fmt.Printf("%E\n", 123400000.0)
-
-	fmt.Printf("%s\n", "\"string\"")
-
-	fmt.Printf("%q\n", "string")
-
-	fmt.Printf("%x\n", "hex this")
-
-	fmt.Printf("%p\n", &p)
-
-	fmt.Printf("|%6d|%6d|\n", 12, 345)
-
-	fmt.Printf("|%6.2f|%6.2f|\n", 1.2, 3.45)
-
-	fmt.Printf("|%-6.2f|%-6.2f|\n", 1.2, 3.45)
-
-	fmt.Printf("|%6s|%6s|\n", "foo", "b")
-
-	fmt.Printf("|%-6s|%-6s|\n", "foo", "b")
-
-	s := fmt.Sprintf("a %s", "string")
-	fmt.Println(s)
-
-	fmt.Fprintf(os.Stderr, "an %s\n", "error")
+	out, _ = xml.MarshalIndent(nesting, " ", "  ")
+	fmt.Println(string(out))
 }
