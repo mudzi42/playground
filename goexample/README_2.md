@@ -10,3 +10,4 @@
 8. https://gobyexample.com/xml
 9. https://gobyexample.com/time
 10. https://gobyexample.com/epoch
+11. https://gobyexample.com/time-formatting-parsing
