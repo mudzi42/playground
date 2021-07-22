@@ -2,32 +2,36 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 )
 
 func main() {
-	p := fmt.Println
 
-	t := time.Now()
-	p(t.Format(time.RFC3339))
+	fmt.Print(rand.Intn(100), ",")
+	fmt.Print(rand.Intn(100))
+	fmt.Println()
 
-	t1, e := time.Parse(
-		time.RFC3339,
-		"2012-11-01T22:08:41+00:00")
-	p(t1)
+	fmt.Println(rand.Float64())
 
-	p(t.Format("3:04PM"))
-	p(t.Format("Mon Jan _2 15:04:05 2006"))
-	p(t.Format("2006-01-02T15:04:05.999999-07:00"))
-	form := "3 04 PM"
-	t2, e := time.Parse(form, "8 41 PM")
-	p(t2)
+	fmt.Print((rand.Float64()*5)+5, ",")
+	fmt.Print((rand.Float64() * 5) + 5)
+	fmt.Println()
 
-	fmt.Printf("%d-%02d-%02dT%02d:%02d:%02d-00:00\n",
-		t.Year(), t.Month(), t.Day(),
-		t.Hour(), t.Minute(), t.Second())
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
 
-	ansic := "Mon Jan _2 15:04:05 2006"
-	_, e = time.Parse(ansic, "8:41PM")
-	p(e)
+	fmt.Print(r1.Intn(100), ",")
+	fmt.Print(r1.Intn(100))
+	fmt.Println()
+
+	s2 := rand.NewSource(42)
+	r2 := rand.New(s2)
+	fmt.Print(r2.Intn(100), ",")
+	fmt.Print(r2.Intn(100))
+	fmt.Println()
+	s3 := rand.NewSource(42)
+	r3 := rand.New(s3)
+	fmt.Print(r3.Intn(100), ",")
+	fmt.Print(r3.Intn(100))
 }

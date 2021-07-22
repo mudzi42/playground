@@ -11,3 +11,5 @@
 9. https://gobyexample.com/time
 10. https://gobyexample.com/epoch
 11. https://gobyexample.com/time-formatting-parsing
+12. https://gobyexample.com/random-numbers
+13. https://gobyexample.com/number-parsing
