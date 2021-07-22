@@ -2,36 +2,26 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	"strconv"
 )
 
 func main() {
 
-	fmt.Print(rand.Intn(100), ",")
-	fmt.Print(rand.Intn(100))
-	fmt.Println()
+	f, _ := strconv.ParseFloat("1.234", 64)
+	fmt.Println(f)
 
-	fmt.Println(rand.Float64())
+	i, _ := strconv.ParseInt("123", 0, 64)
+	fmt.Println(i)
 
-	fmt.Print((rand.Float64()*5)+5, ",")
-	fmt.Print((rand.Float64() * 5) + 5)
-	fmt.Println()
+	d, _ := strconv.ParseInt("0x1c8", 0, 64)
+	fmt.Println(d)
 
-	s1 := rand.NewSource(time.Now().UnixNano())
-	r1 := rand.New(s1)
+	u, _ := strconv.ParseUint("789", 0, 64)
+	fmt.Println(u)
 
-	fmt.Print(r1.Intn(100), ",")
-	fmt.Print(r1.Intn(100))
-	fmt.Println()
+	k, _ := strconv.Atoi("135")
+	fmt.Println(k)
 
-	s2 := rand.NewSource(42)
-	r2 := rand.New(s2)
-	fmt.Print(r2.Intn(100), ",")
-	fmt.Print(r2.Intn(100))
-	fmt.Println()
-	s3 := rand.NewSource(42)
-	r3 := rand.New(s3)
-	fmt.Print(r3.Intn(100), ",")
-	fmt.Print(r3.Intn(100))
+	_, e := strconv.Atoi("wat")
+	fmt.Println(e)
 }
