@@ -2,26 +2,36 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"net"
+	"net/url"
 )
 
 func main() {
 
-	f, _ := strconv.ParseFloat("1.234", 64)
-	fmt.Println(f)
+	s := "postgres://user:pass@host.com:5432/path?k=v#f"
 
-	i, _ := strconv.ParseInt("123", 0, 64)
-	fmt.Println(i)
+	u, err := url.Parse(s)
+	if err != nil {
+		panic(err)
+	}
 
-	d, _ := strconv.ParseInt("0x1c8", 0, 64)
-	fmt.Println(d)
+	fmt.Println(u.Scheme)
 
-	u, _ := strconv.ParseUint("789", 0, 64)
-	fmt.Println(u)
+	fmt.Println(u.User)
+	fmt.Println(u.User.Username())
+	p, _ := u.User.Password()
+	fmt.Println(p)
 
-	k, _ := strconv.Atoi("135")
-	fmt.Println(k)
+	fmt.Println(u.Host)
+	host, port, _ := net.SplitHostPort(u.Host)
+	fmt.Println(host)
+	fmt.Println(port)
 
-	_, e := strconv.Atoi("wat")
-	fmt.Println(e)
+	fmt.Println(u.Path)
+	fmt.Println(u.Fragment)
+
+	fmt.Println(u.RawQuery)
+	m, _ := url.ParseQuery(u.RawQuery)
+	fmt.Println(m)
+	fmt.Println(m["k"][0])
 }
