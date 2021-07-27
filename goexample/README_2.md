@@ -14,3 +14,5 @@
 12. https://gobyexample.com/random-numbers
 13. https://gobyexample.com/number-parsing
 13. https://gobyexample.com/url-parsing
+14. https://gobyexample.com/sha1-hashes
+15. https://gobyexample.com/base64-encoding
