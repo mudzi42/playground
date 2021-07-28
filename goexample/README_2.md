@@ -16,3 +16,4 @@
 13. https://gobyexample.com/url-parsing
 14. https://gobyexample.com/sha1-hashes
 15. https://gobyexample.com/base64-encoding
+16. https://gobyexample.com/reading-files
